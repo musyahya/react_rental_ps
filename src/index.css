@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.border-radius{
+  border-radius: 20px !important;
+}
+
+.header-radius{
+  border-radius: 20px 20px 0 0 !important;
+}
