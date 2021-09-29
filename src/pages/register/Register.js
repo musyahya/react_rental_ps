@@ -1,13 +1,16 @@
 import axios from 'axios';
 import React, {useState} from 'react'
 import { Row, Button, Col, Form, Card } from "react-bootstrap";
+import { useHistory } from 'react-router-dom';
 
-function Register() {
+function Register(props) {
 
     const [name, setName] = useState()
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
     const [passwordConfirmation, setPasswordConfirmation] = useState();
+
+    const history = useHistory()
 
     function register() {
         axios
@@ -20,6 +23,8 @@ function Register() {
           .then(function (response) {
             console.log(response);
              localStorage.setItem("token", response.data.token);
+             props.setToken(response.data.token)
+             history.push('/dashboard')
           })
           .catch(function (error) {
             console.log(error);

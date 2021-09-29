@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Dasboard() {
+function Dashboard() {
     return (
         <div>
             halaman dashboard
@@ -8,4 +8,4 @@ function Dasboard() {
     )
 }
 
-export default Dasboard
+export default Dashboard

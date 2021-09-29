@@ -1,21 +1,35 @@
-import React from 'react'
+import React, { Fragment } from "react";
 import { Switch, Route } from "react-router-dom";
 import Login from '../pages/login/Login';
 import Logout from "../pages/logout/Logout";
 import Register from "../pages/register/Register";
+import Dashboard from "../pages/dashboard/Dashboard";
 
-function RouteComponent() {
+function RouteComponent(props) {
+
+   
+
     return (
       <Switch>
-        <Route path="/logout">
-          <Logout />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/">
-          <Register />
-        </Route>
+        {props.token ? (
+          <Fragment>
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
+            <Route path="/logout">
+              <Logout token={props.token} setToken={props.setToken} />
+            </Route>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/" exact>
+              <Register setToken={props.setToken} />
+            </Route>
+          </Fragment>
+        )}
       </Switch>
     );
 }
