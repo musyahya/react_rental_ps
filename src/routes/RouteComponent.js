@@ -7,8 +7,6 @@ import Dashboard from "../pages/dashboard/Dashboard";
 
 function RouteComponent(props) {
 
-   
-
     return (
       <Switch>
         {props.token ? (
@@ -23,7 +21,7 @@ function RouteComponent(props) {
         ) : (
           <Fragment>
             <Route path="/login">
-              <Login />
+              <Login setToken={props.setToken} />
             </Route>
             <Route path="/" exact>
               <Register setToken={props.setToken} />
