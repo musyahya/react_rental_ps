@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, {useState} from 'react'
-import { Row, Button, Col, Form, Card } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { useHistory } from 'react-router-dom';
+import CardComponent from '../../components/CardComponent';
 
 function Register(props) {
 
@@ -32,54 +33,36 @@ function Register(props) {
     }
 
     return (
-      <Row className="mt-5 justify-content-center">
-        <Col md={6}>
-          <Card className="shadow border-radius">
-            <Card.Header className="text-center bg-primary text-white header-radius">
-              Halaman Register
-            </Card.Header>
-            <Card.Body>
-              <Form>
-                <Form.Group className="mb-3">
-                  <Form.Label>Name</Form.Label>
-                  <Form.Control
-                    onChange={(e) => setName(e.target.value)}
-                    type="text"
-                  />
-                </Form.Group>
+      <CardComponent title='Register' action={register}>
+        <Form.Group className="mb-3">
+          <Form.Label>Name</Form.Label>
+          <Form.Control onChange={(e) => setName(e.target.value)} type="text" />
+        </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    onChange={(e) => setEmail(e.target.value)}
-                    type="email"
-                  />
-                </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+          />
+        </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    onChange={(e) => setPassword(e.target.value)}
-                    type="password"
-                  />
-                </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+          />
+        </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Konfirmasi Password</Form.Label>
-                  <Form.Control
-                    onChange={(e) => setPasswordConfirmation(e.target.value)}
-                    type="password"
-                  />
-                </Form.Group>
-
-                <Button variant="primary" onClick={register}>
-                  Register
-                </Button>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+        <Form.Group className="mb-3">
+          <Form.Label>Konfirmasi Password</Form.Label>
+          <Form.Control
+            onChange={(e) => setPasswordConfirmation(e.target.value)}
+            type="password"
+          />
+        </Form.Group>
+      </CardComponent>
     );
 }
 
