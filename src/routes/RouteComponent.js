@@ -16,7 +16,7 @@ function RouteComponent(props) {
               <Dashboard />
             </Route>
             <Route path="/barang">
-              <Barang />
+              <Barang token={props.token} />
             </Route>
             <Route path="/logout">
               <Logout token={props.token} setToken={props.setToken} />
