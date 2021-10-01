@@ -13,10 +13,17 @@ function Barang(props) {
     const [edit, setEdit] = useState(false)
 
     const [show, setShow] = useState(false);
-    const handleShow = () => setShow(true);
+
+    function handleShow () {
+        setShow(true);
+    }
+
     function handleClose () {
         setShow(false);
         setEdit(false)
+        setNama(" ");
+        setDeskripsi(" ");
+        setId(" ");
     }
 
     useEffect(() => {
@@ -51,8 +58,6 @@ function Barang(props) {
            .then(function (response) {
              console.log(response);
              handleClose();
-             setNama(" ");
-             setDeskripsi(" ")
              getBarang()
            })
            .catch(function (error) {
@@ -68,15 +73,35 @@ function Barang(props) {
        })
          .then(function (response) {
            console.log(response);
+           handleShow()
            setNama(response.data.data.nama)
            setDeskripsi(response.data.data.deskripsi)
            setId(response.data.data.id)
-           handleShow()
            setEdit(true)
          })
          .catch(function (error) {
            console.log(error);
          });
+     }
+
+     function updateBarang() {
+          axios({
+            method: "put",
+            url: "http://127.0.0.1:8000/api/barang/" + id,
+            headers: { Authorization: `Bearer ${props.token}` },
+            data: {
+                nama: nama,
+                deskripsi: deskripsi
+            }
+          })
+            .then(function (response) {
+              console.log(response);
+               handleClose();
+               getBarang();
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
      }
 
     return (
@@ -122,7 +147,7 @@ function Barang(props) {
             <Button variant="secondary" onClick={handleClose}>
               Batal
             </Button>
-            <Button variant="primary" onClick={postBarang}>
+            <Button variant="primary" onClick={edit ? updateBarang : postBarang}>
               {edit ? 'Update' : 'Simpan'}
             </Button>
           </Modal.Footer>
