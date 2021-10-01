@@ -10,7 +10,9 @@ function Barang(props) {
     const [deskripsi, setDeskripsi] = useState()
     const [id, setId] = useState()
 
+    const [tambah, setTambah] = useState(false)
     const [edit, setEdit] = useState(false)
+    const [hapus, setHapus] = useState(false)
 
     const [show, setShow] = useState(false);
 
@@ -21,6 +23,8 @@ function Barang(props) {
     function handleClose () {
         setShow(false);
         setEdit(false)
+        setTambah(false)
+        setHapus(false)
         setNama(" ");
         setDeskripsi(" ");
         setId(" ");
@@ -104,6 +108,33 @@ function Barang(props) {
             });
      }
 
+     function deleteBarang() {
+          axios({
+            method: "delete",
+            url: "http://127.0.0.1:8000/api/barang/" + id,
+            headers: { Authorization: `Bearer ${props.token}` },
+          })
+            .then(function (response) {
+              console.log(response);
+              handleClose();
+              getBarang();
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+     }
+
+     function showTambah() {
+          handleShow();
+          setTambah(true);
+     }
+
+     function showDelete(id) {
+         handleShow();
+         setId(id)
+         setHapus(true)
+     }
+
     return (
       <SidebarComponent>
         <h1>Barang</h1>
@@ -112,44 +143,73 @@ function Barang(props) {
           variant="primary"
           size="sm"
           className="mt-3"
-          onClick={handleShow}
+          onClick={showTambah}
         >
           Tambah
         </Button>
 
         <Modal show={show} onHide={handleClose} size="lg">
           <Modal.Header closeButton>
-            <Modal.Title>{edit ? 'Edit' : 'Tambah'} Barang</Modal.Title>
+            <Modal.Title>
+              {edit && "Edit"} {tambah && "Tambah"} {hapus && "Hapus"} Barang
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
-              <Form.Group className="mb-3">
-                <Form.Label>Nama</Form.Label>
-                <Form.Control
-                  onChange={(e) => setNama(e.target.value)}
-                  type="text"
-                  value={nama}
-                />
-              </Form.Group>
+            {
+                hapus ? (
+                    <p>Anda yakin ingin menghapus data ?</p>
+                ) : (
+                    <Form>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Nama</Form.Label>
+                            <Form.Control
+                            onChange={(e) => setNama(e.target.value)}
+                            type="text"
+                            value={nama}
+                            />
+                        </Form.Group>
 
-              <Form.Group className="mb-3">
-                <Form.Label>Deskripsi</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={3}
-                  onChange={(e) => setDeskripsi(e.target.value)}
-                  value={deskripsi}
-                />
-              </Form.Group>
-            </Form>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Deskripsi</Form.Label>
+                            <Form.Control
+                            as="textarea"
+                            rows={3}
+                            onChange={(e) => setDeskripsi(e.target.value)}
+                            value={deskripsi}
+                            />
+                        </Form.Group>
+                    </Form>
+                )
+            }
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Batal
             </Button>
-            <Button variant="primary" onClick={edit ? updateBarang : postBarang}>
-              {edit ? 'Update' : 'Simpan'}
-            </Button>
+            {edit && (
+              <Button
+                variant="primary"
+                onClick={updateBarang}
+              >
+                Update
+              </Button>
+            )}
+            {tambah && (
+              <Button
+                variant="primary"
+                onClick={postBarang}
+              >
+                Simpan
+              </Button>
+            )}
+            {hapus && (
+              <Button
+                variant="primary"
+                onClick={deleteBarang}
+              >
+                Hapus
+              </Button>
+            )}
           </Modal.Footer>
         </Modal>
 
@@ -171,8 +231,21 @@ function Barang(props) {
                   <td>{barang.deskripsi}</td>
                   <td>
                     <ButtonGroup aria-label="Basic example">
-                      <Button size="sm" onClick={() => getBarangId(barang.id)} className="mx-2" variant="primary">Edit</Button>
-                      <Button size="sm" variant="secondary">Middle</Button>
+                      <Button
+                        size="sm"
+                        onClick={() => getBarangId(barang.id)}
+                        className="mx-2"
+                        variant="primary"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => showDelete(barang.id)}
+                        variant="danger"
+                      >
+                        Hapus
+                      </Button>
                     </ButtonGroup>
                   </td>
                 </tr>
