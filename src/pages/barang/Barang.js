@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
-import { Table, Button, Modal, Form, ButtonGroup } from "react-bootstrap";
+import { Button, Modal, Form, ButtonGroup } from "react-bootstrap";
 import SidebarComponent from '../../components/SidebarComponent';
+import TableComponent from '../../components/TableComponent';
 
 function Barang(props) {
 
@@ -155,65 +156,54 @@ function Barang(props) {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {
-                hapus ? (
-                    <p>Anda yakin ingin menghapus data ?</p>
-                ) : (
-                    <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Nama</Form.Label>
-                            <Form.Control
-                            onChange={(e) => setNama(e.target.value)}
-                            type="text"
-                            value={nama}
-                            />
-                        </Form.Group>
+            {hapus ? (
+              <p>Anda yakin ingin menghapus data ?</p>
+            ) : (
+              <Form>
+                <Form.Group className="mb-3">
+                  <Form.Label>Nama</Form.Label>
+                  <Form.Control
+                    onChange={(e) => setNama(e.target.value)}
+                    type="text"
+                    value={nama}
+                  />
+                </Form.Group>
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Deskripsi</Form.Label>
-                            <Form.Control
-                            as="textarea"
-                            rows={3}
-                            onChange={(e) => setDeskripsi(e.target.value)}
-                            value={deskripsi}
-                            />
-                        </Form.Group>
-                    </Form>
-                )
-            }
+                <Form.Group className="mb-3">
+                  <Form.Label>Deskripsi</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    onChange={(e) => setDeskripsi(e.target.value)}
+                    value={deskripsi}
+                  />
+                </Form.Group>
+              </Form>
+            )}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Batal
             </Button>
             {edit && (
-              <Button
-                variant="primary"
-                onClick={updateBarang}
-              >
+              <Button variant="primary" onClick={updateBarang}>
                 Update
               </Button>
             )}
             {tambah && (
-              <Button
-                variant="primary"
-                onClick={postBarang}
-              >
+              <Button variant="primary" onClick={postBarang}>
                 Simpan
               </Button>
             )}
             {hapus && (
-              <Button
-                variant="primary"
-                onClick={deleteBarang}
-              >
+              <Button variant="primary" onClick={deleteBarang}>
                 Hapus
               </Button>
             )}
           </Modal.Footer>
         </Modal>
 
-        <Table striped bordered hover className="mt-3">
+        <TableComponent>
           <thead>
             <tr>
               <th>No</th>
@@ -251,7 +241,7 @@ function Barang(props) {
                 </tr>
               ))}
           </tbody>
-        </Table>
+        </TableComponent>
       </SidebarComponent>
     );
 }

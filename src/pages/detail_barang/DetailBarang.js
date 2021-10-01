@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Table } from 'react-bootstrap';
 import SidebarComponent from '../../components/SidebarComponent';
+import TableComponent from "../../components/TableComponent";
 
 function DetailBarang(props) {
 
@@ -30,7 +30,7 @@ function DetailBarang(props) {
       <SidebarComponent>
         <h1>Detail Barang</h1>
 
-        <Table striped bordered hover className="mt-3">
+        <TableComponent>
           <thead>
             <tr>
               <th>No</th>
@@ -43,14 +43,14 @@ function DetailBarang(props) {
             {detailBarang &&
               detailBarang.map((detailBarang, index) => (
                 <tr>
-                  <td>{index+1}</td>
+                  <td>{index + 1}</td>
                   <td>{detailBarang.barang.nama}</td>
                   <td>Rp. {detailBarang.harga}</td>
                   <td>{detailBarang.durasi} Hari</td>
                 </tr>
               ))}
           </tbody>
-        </Table>
+        </TableComponent>
       </SidebarComponent>
     );
 }
