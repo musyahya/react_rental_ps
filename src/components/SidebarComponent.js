@@ -6,7 +6,6 @@ function SidebarComponent(props) {
 
     const { pathname } = useLocation();
 
-
     return (
       <Container className="mt-5">
         <Row>
@@ -25,6 +24,13 @@ function SidebarComponent(props) {
                 className={pathname === "/barang" && "active"}
               >
                 Barang
+              </ListGroup.Item>
+              <ListGroup.Item
+                as={Link}
+                to="/detail_barang"
+                className={pathname === "/detail_barang" && "active"}
+              >
+                Detail Barang
               </ListGroup.Item>
             </ListGroup>
           </Col>

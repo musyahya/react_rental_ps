@@ -5,6 +5,7 @@ import Logout from "../pages/logout/Logout";
 import Register from "../pages/register/Register";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Barang from "../pages/barang/Barang";
+import DetailBarang from "../pages/detail_barang/DetailBarang";
 
 function RouteComponent(props) {
 
@@ -17,6 +18,9 @@ function RouteComponent(props) {
             </Route>
             <Route path="/barang">
               <Barang token={props.token} />
+            </Route>
+            <Route path="/detail_barang">
+              <DetailBarang token={props.token} />
             </Route>
             <Route path="/logout">
               <Logout token={props.token} setToken={props.setToken} />
