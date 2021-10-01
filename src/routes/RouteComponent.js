@@ -4,6 +4,7 @@ import Login from '../pages/login/Login';
 import Logout from "../pages/logout/Logout";
 import Register from "../pages/register/Register";
 import Dashboard from "../pages/dashboard/Dashboard";
+import Barang from "../pages/barang/Barang";
 
 function RouteComponent(props) {
 
@@ -13,6 +14,9 @@ function RouteComponent(props) {
           <Fragment>
             <Route path="/dashboard">
               <Dashboard />
+            </Route>
+            <Route path="/barang">
+              <Barang />
             </Route>
             <Route path="/logout">
               <Logout token={props.token} setToken={props.setToken} />

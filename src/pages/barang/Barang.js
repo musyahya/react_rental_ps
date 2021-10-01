@@ -1,12 +1,12 @@
 import React from 'react'
 import SidebarComponent from '../../components/SidebarComponent';
 
-function Dashboard() {
+function Barang() {
     return (
       <SidebarComponent>
-        <h1>Dashboard</h1>
+        <h1>Barang</h1>
       </SidebarComponent>
     );
 }
 
-export default Dashboard
+export default Barang
