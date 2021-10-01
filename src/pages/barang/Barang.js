@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
-import { Table, Button, Modal, Form } from "react-bootstrap";
+import { Table, Button, Modal, Form, ButtonGroup } from "react-bootstrap";
 import SidebarComponent from '../../components/SidebarComponent';
 
 function Barang(props) {
@@ -8,10 +8,16 @@ function Barang(props) {
     const [barang, setBarang] = useState()
     const [nama, setNama] = useState()
     const [deskripsi, setDeskripsi] = useState()
+    const [id, setId] = useState()
+
+    const [edit, setEdit] = useState(false)
 
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    function handleClose () {
+        setShow(false);
+        setEdit(false)
+    }
 
     useEffect(() => {
         getBarang()
@@ -54,6 +60,25 @@ function Barang(props) {
            });
      }
 
+     function getBarangId(id) {
+       axios({
+         method: "get",
+         url: "http://127.0.0.1:8000/api/barang/" +id,
+         headers: { Authorization: `Bearer ${props.token}` },
+       })
+         .then(function (response) {
+           console.log(response);
+           setNama(response.data.data.nama)
+           setDeskripsi(response.data.data.deskripsi)
+           setId(response.data.data.id)
+           handleShow()
+           setEdit(true)
+         })
+         .catch(function (error) {
+           console.log(error);
+         });
+     }
+
     return (
       <SidebarComponent>
         <h1>Barang</h1>
@@ -69,7 +94,7 @@ function Barang(props) {
 
         <Modal show={show} onHide={handleClose} size="lg">
           <Modal.Header closeButton>
-            <Modal.Title>Tambah Brang</Modal.Title>
+            <Modal.Title>{edit ? 'Edit' : 'Tambah'} Barang</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
@@ -78,6 +103,7 @@ function Barang(props) {
                 <Form.Control
                   onChange={(e) => setNama(e.target.value)}
                   type="text"
+                  value={nama}
                 />
               </Form.Group>
 
@@ -87,6 +113,7 @@ function Barang(props) {
                   as="textarea"
                   rows={3}
                   onChange={(e) => setDeskripsi(e.target.value)}
+                  value={deskripsi}
                 />
               </Form.Group>
             </Form>
@@ -96,7 +123,7 @@ function Barang(props) {
               Batal
             </Button>
             <Button variant="primary" onClick={postBarang}>
-              Simpan
+              {edit ? 'Update' : 'Simpan'}
             </Button>
           </Modal.Footer>
         </Modal>
@@ -107,6 +134,7 @@ function Barang(props) {
               <th>No</th>
               <th>Nama</th>
               <th>Deskripsi</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -116,6 +144,12 @@ function Barang(props) {
                   <td>{index + 1}</td>
                   <td>{barang.nama}</td>
                   <td>{barang.deskripsi}</td>
+                  <td>
+                    <ButtonGroup aria-label="Basic example">
+                      <Button size="sm" onClick={() => getBarangId(barang.id)} className="mx-2" variant="primary">Edit</Button>
+                      <Button size="sm" variant="secondary">Middle</Button>
+                    </ButtonGroup>
+                  </td>
                 </tr>
               ))}
           </tbody>
