@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import SidebarComponent from '../../components/SidebarComponent';
 import TableComponent from "../../components/TableComponent";
 import { Button, ButtonGroup, Form, Modal } from "react-bootstrap";
+import SmallError from "../../components/SmallError";
 
 function DetailBarang(props) {
 
@@ -15,6 +16,7 @@ function DetailBarang(props) {
     const [id, setId] = useState()
     const [barangNama, setBarangNama] = useState()
 
+    const [error, setError] = useState()
      const [tambah, setTambah] = useState();
      const [edit, setEdit] = useState();
      const [hapus, setHapus] = useState();
@@ -35,6 +37,7 @@ function DetailBarang(props) {
          setTambah(false)
          setEdit(false)
          setHapus(false)
+         setError(false)
      }
 
     useEffect(() => {
@@ -92,7 +95,8 @@ function DetailBarang(props) {
             getDetailBarang();
           })
           .catch(function (error) {
-            console.log(error);
+            console.log(error.response);
+            setError(error.response.data.errors)
           });
     }
 
@@ -139,7 +143,8 @@ function DetailBarang(props) {
               getDetailBarang();
            })
            .catch(function (error) {
-             console.log(error);
+             console.log(error.response);
+              setError(error.response.data.errors);
            });
     }
 
@@ -164,6 +169,8 @@ function DetailBarang(props) {
            console.log(error);
          });
     }
+
+    console.log(barangId)
     
     return (
       <SidebarComponent>
@@ -181,63 +188,80 @@ function DetailBarang(props) {
         <Modal show={show} onHide={handleClose} size="lg">
           <Modal.Header closeButton>
             <Modal.Title>
-              {tambah && "Tambah"} {edit && "Edit"} {hapus && 'Hapus'} Detail Barang
+              {tambah && "Tambah"} {edit && "Edit"} {hapus && "Hapus"} Detail
+              Barang
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-           {
-             hapus ? (
-               <p>Anda yakin ingin menghapus data ?</p>
-             ) : (
-                <Form>
-                  {edit ? (
-                    <Form.Group className="mb-3">
-                      <Form.Label>Barang</Form.Label>
-                      <Form.Select onChange={(e) => setBarangId(e.target.value)}>
-                        <option value={barangId}>{barangNama}</option>
-                        {barang &&
-                          barang.map((barang) => {
-                            if (barang.nama !== barangNama) {
-                                return <option value={barang.id}>{barang.nama}</option>
-                            }
-                          })}
-                      </Form.Select>
-                    </Form.Group>
-                  ) : (
-                    <Form.Group className="mb-3">
-                      <Form.Label>Barang</Form.Label>
-                      <Form.Select onChange={(e) => setBarangId(e.target.value)}>
-                        <option>Pilih Barang</option>
-                        {barang &&
-                          barang.map((barang) => (
-                            <option value={barang.id}>{barang.nama}</option>
-                          ))}
-                      </Form.Select>
-                    </Form.Group>
+            {hapus ? (
+              <p>Anda yakin ingin menghapus data ?</p>
+            ) : (
+              <Form>
+                {edit ? (
+                  <Form.Group className="mb-3">
+                    <Form.Label>Barang</Form.Label>
+                    <Form.Select onChange={(e) => setBarangId(e.target.value)}>
+                      <option value={barangId}>{barangNama}</option>
+                      {barang &&
+                        barang.map((barang) => {
+                          if (barang.nama !== barangNama) {
+                            return (
+                              <option value={barang.id}>{barang.nama}</option>
+                            );
+                          }
+                        })}
+                    </Form.Select>
+                    {error && (
+                      <SmallError
+                        error={error.barang_id && error.barang_id[0]}
+                      />
+                    )}
+                  </Form.Group>
+                ) : (
+                  <Form.Group className="mb-3">
+                    <Form.Label>Barang</Form.Label>
+                    <Form.Select onChange={(e) => setBarangId(e.target.value)}>
+                      <option>Pilih Barang</option>
+                      {barang &&
+                        barang.map((barang) => (
+                          <option value={barang.id}>{barang.nama}</option>
+                        ))}
+                    </Form.Select>
+                    {error && (
+                      <SmallError
+                        error={error.barang_id && error.barang_id[0]}
+                      />
+                    )}
+                  </Form.Group>
+                )}
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Harga</Form.Label>
+                  <Form.Control
+                    type="number"
+                    min="1"
+                    onChange={(e) => setHarga(e.target.value)}
+                    value={harga}
+                  />
+                  {error && (
+                    <SmallError error={error.harga && error.harga[0]} />
                   )}
+                </Form.Group>
 
-                  <Form.Group className="mb-3">
-                    <Form.Label>Harga</Form.Label>
-                    <Form.Control
-                      type="number"
-                      min="1"
-                      onChange={(e) => setHarga(e.target.value)}
-                      value={harga}
-                    />
-                  </Form.Group>
-
-                  <Form.Group className="mb-3">
-                    <Form.Label>Durasi</Form.Label>
-                    <Form.Control
-                      type="number"
-                      min="1"
-                      onChange={(e) => setDurasi(e.target.value)}
-                      value={durasi}
-                    />
-                  </Form.Group>
-                </Form>
-             )
-           }
+                <Form.Group className="mb-3">
+                  <Form.Label>Durasi</Form.Label>
+                  <Form.Control
+                    type="number"
+                    min="1"
+                    onChange={(e) => setDurasi(e.target.value)}
+                    value={durasi}
+                  />
+                  {error && (
+                    <SmallError error={error.durasi && error.durasi[0]} />
+                  )}
+                </Form.Group>
+              </Form>
+            )}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
@@ -289,7 +313,11 @@ function DetailBarang(props) {
                       >
                         Edit
                       </Button>
-                      <Button size="sm" variant="danger" onClick={() => showHapus(detailBarang.id)}>
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        onClick={() => showHapus(detailBarang.id)}
+                      >
                         Hapus
                       </Button>
                     </ButtonGroup>

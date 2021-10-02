@@ -36,7 +36,7 @@ function Login(props) {
       <Form.Group className="mb-3">
         <Form.Label>Email</Form.Label>
         <Form.Control onChange={(e) => setEmail(e.target.value)} type="email" />
-        {error && <SmallError error={error.email[0]} />}
+        {error && <SmallError error={error.email && error.email[0]} />}
       </Form.Group>
 
       <Form.Group className="mb-3">
@@ -45,7 +45,7 @@ function Login(props) {
           onChange={(e) => setPassword(e.target.value)}
           type="password"
         />
-        {error && <SmallError error={error.password[0]} />}
+        {error && <SmallError error={error.password && error.password[0]} />}
       </Form.Group>
     </CardComponent>
   );

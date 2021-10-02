@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Form, ButtonGroup } from "react-bootstrap";
 import SidebarComponent from '../../components/SidebarComponent';
+import SmallError from '../../components/SmallError';
 import TableComponent from '../../components/TableComponent';
 
 function Barang(props) {
@@ -14,6 +15,7 @@ function Barang(props) {
     const [tambah, setTambah] = useState(false)
     const [edit, setEdit] = useState(false)
     const [hapus, setHapus] = useState(false)
+    const [error, setError] = useState()
 
     const [show, setShow] = useState(false);
 
@@ -23,9 +25,12 @@ function Barang(props) {
 
     function handleClose () {
         setShow(false);
+
         setEdit(false)
         setTambah(false)
         setHapus(false)
+        setError(false)
+
         setNama(" ");
         setDeskripsi(" ");
         setId(" ");
@@ -66,7 +71,8 @@ function Barang(props) {
              getBarang()
            })
            .catch(function (error) {
-             console.log(error);
+             console.log(error.response);
+             setError(error.response.data.errors);
            });
      }
 
@@ -105,7 +111,8 @@ function Barang(props) {
                getBarang();
             })
             .catch(function (error) {
-              console.log(error);
+              console.log(error.response);
+               setError(error.response.data.errors);
             });
      }
 
@@ -167,6 +174,9 @@ function Barang(props) {
                     type="text"
                     value={nama}
                   />
+                  {error && (
+                    <SmallError error={error.nama && error.nama[0]} />
+                  )}
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -177,6 +187,11 @@ function Barang(props) {
                     onChange={(e) => setDeskripsi(e.target.value)}
                     value={deskripsi}
                   />
+                  {error && (
+                    <SmallError
+                      error={error.deskripsi && error.deskripsi[0]}
+                    />
+                  )}
                 </Form.Group>
               </Form>
             )}
