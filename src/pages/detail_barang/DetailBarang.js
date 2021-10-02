@@ -17,6 +17,7 @@ function DetailBarang(props) {
 
      const [tambah, setTambah] = useState();
      const [edit, setEdit] = useState();
+     const [hapus, setHapus] = useState();
 
      const [show, setShow] = useState(false);
      const handleShow = () => setShow(true);
@@ -33,6 +34,7 @@ function DetailBarang(props) {
 
          setTambah(false)
          setEdit(false)
+         setHapus(false)
      }
 
     useEffect(() => {
@@ -140,6 +142,28 @@ function DetailBarang(props) {
              console.log(error);
            });
     }
+
+    function showHapus(id) {
+      handleShow();
+      setHapus(true);
+      setId(id)
+    }
+
+    function deleteDetailBarang() {
+       axios({
+         method: "delete",
+         url: "http://127.0.0.1:8000/api/detail_barang/" + id,
+         headers: { Authorization: `Bearer ${props.token}` },
+       })
+         .then(function (response) {
+           console.log(response);
+           handleClose();
+           getDetailBarang();
+         })
+         .catch(function (error) {
+           console.log(error);
+         });
+    }
     
     return (
       <SidebarComponent>
@@ -157,57 +181,63 @@ function DetailBarang(props) {
         <Modal show={show} onHide={handleClose} size="lg">
           <Modal.Header closeButton>
             <Modal.Title>
-              {tambah && "Tambah"} {edit && "Edit"} Detail Barang
+              {tambah && "Tambah"} {edit && "Edit"} {hapus && 'Hapus'} Detail Barang
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
-              {edit ? (
-                <Form.Group className="mb-3">
-                  <Form.Label>Barang</Form.Label>
-                  <Form.Select onChange={(e) => setBarangId(e.target.value)}>
-                    <option value={barangId}>{barangNama}</option>
-                    {barang &&
-                      barang.map((barang) => {
-                        if (barang.nama !== barangNama) {
-                            return <option value={barang.id}>{barang.nama}</option>
-                        }
-                      })}
-                  </Form.Select>
-                </Form.Group>
-              ) : (
-                <Form.Group className="mb-3">
-                  <Form.Label>Barang</Form.Label>
-                  <Form.Select onChange={(e) => setBarangId(e.target.value)}>
-                    <option>Pilih Barang</option>
-                    {barang &&
-                      barang.map((barang) => (
-                        <option value={barang.id}>{barang.nama}</option>
-                      ))}
-                  </Form.Select>
-                </Form.Group>
-              )}
+           {
+             hapus ? (
+               <p>Anda yakin ingin menghapus data ?</p>
+             ) : (
+                <Form>
+                  {edit ? (
+                    <Form.Group className="mb-3">
+                      <Form.Label>Barang</Form.Label>
+                      <Form.Select onChange={(e) => setBarangId(e.target.value)}>
+                        <option value={barangId}>{barangNama}</option>
+                        {barang &&
+                          barang.map((barang) => {
+                            if (barang.nama !== barangNama) {
+                                return <option value={barang.id}>{barang.nama}</option>
+                            }
+                          })}
+                      </Form.Select>
+                    </Form.Group>
+                  ) : (
+                    <Form.Group className="mb-3">
+                      <Form.Label>Barang</Form.Label>
+                      <Form.Select onChange={(e) => setBarangId(e.target.value)}>
+                        <option>Pilih Barang</option>
+                        {barang &&
+                          barang.map((barang) => (
+                            <option value={barang.id}>{barang.nama}</option>
+                          ))}
+                      </Form.Select>
+                    </Form.Group>
+                  )}
 
-              <Form.Group className="mb-3">
-                <Form.Label>Harga</Form.Label>
-                <Form.Control
-                  type="number"
-                  min="1"
-                  onChange={(e) => setHarga(e.target.value)}
-                  value={harga}
-                />
-              </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Harga</Form.Label>
+                    <Form.Control
+                      type="number"
+                      min="1"
+                      onChange={(e) => setHarga(e.target.value)}
+                      value={harga}
+                    />
+                  </Form.Group>
 
-              <Form.Group className="mb-3">
-                <Form.Label>Durasi</Form.Label>
-                <Form.Control
-                  type="number"
-                  min="1"
-                  onChange={(e) => setDurasi(e.target.value)}
-                  value={durasi}
-                />
-              </Form.Group>
-            </Form>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Durasi</Form.Label>
+                    <Form.Control
+                      type="number"
+                      min="1"
+                      onChange={(e) => setDurasi(e.target.value)}
+                      value={durasi}
+                    />
+                  </Form.Group>
+                </Form>
+             )
+           }
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
@@ -221,6 +251,11 @@ function DetailBarang(props) {
             {edit && (
               <Button variant="primary" onClick={putDetailBarang}>
                 Update
+              </Button>
+            )}
+            {hapus && (
+              <Button variant="primary" onClick={deleteDetailBarang}>
+                Hapus
               </Button>
             )}
           </Modal.Footer>
@@ -254,8 +289,8 @@ function DetailBarang(props) {
                       >
                         Edit
                       </Button>
-                      <Button size="sm" variant="secondary">
-                        Middle
+                      <Button size="sm" variant="danger" onClick={() => showHapus(detailBarang.id)}>
+                        Hapus
                       </Button>
                     </ButtonGroup>
                   </td>
