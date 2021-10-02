@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import CardComponent from "../../components/CardComponent";
+import SmallError from "../../components/SmallError";
 
 function Login(props) {
 
       const [email, setEmail] = useState();
       const [password, setPassword] = useState();
 
+      const [error, setError] = useState()
       const history = useHistory()
 
       function login() {
@@ -24,7 +26,8 @@ function Login(props) {
                history.push("/dashboard");
              })
              .catch(function (error) {
-               console.log(error);
+               console.log(error.response);
+               setError(error.response.data.errors)
              });
       }
     
@@ -33,6 +36,7 @@ function Login(props) {
       <Form.Group className="mb-3">
         <Form.Label>Email</Form.Label>
         <Form.Control onChange={(e) => setEmail(e.target.value)} type="email" />
+        {error && <SmallError error={error.email[0]} />}
       </Form.Group>
 
       <Form.Group className="mb-3">
@@ -41,6 +45,7 @@ function Login(props) {
           onChange={(e) => setPassword(e.target.value)}
           type="password"
         />
+        {error && <SmallError error={error.password[0]} />}
       </Form.Group>
     </CardComponent>
   );
