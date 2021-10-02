@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import SidebarComponent from '../../components/SidebarComponent';
 import TableComponent from "../../components/TableComponent";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, ButtonGroup, Form, Modal } from "react-bootstrap";
 
 function DetailBarang(props) {
 
@@ -12,18 +12,27 @@ function DetailBarang(props) {
     const [barangId, setBarangId] = useState()
     const [harga, setHarga] = useState()
     const [durasi, setDurasi] = useState()
+    const [id, setId] = useState()
+    const [barangNama, setBarangNama] = useState()
 
      const [tambah, setTambah] = useState();
+     const [edit, setEdit] = useState();
 
      const [show, setShow] = useState(false);
      const handleShow = () => setShow(true);
 
      function handleClose () {
          setShow(false)
+
          setHarga(" ")
          setDurasi(" ")
          setBarangId(" ")
+         setId(" ")
+         setBarangId(" ")
+         setBarangNama(" ")
+
          setTambah(false)
+         setEdit(false)
      }
 
     useEffect(() => {
@@ -89,6 +98,48 @@ function DetailBarang(props) {
         handleShow()
         setTambah(true)
     }
+
+    function showEdit(id) {
+        axios({
+          method: "get",
+          url: "http://127.0.0.1:8000/api/detail_barang/" +id,
+          headers: { Authorization: `Bearer ${props.token}` },
+        })
+          .then(function (response) {
+            console.log(response);
+            handleShow();
+            setEdit(true);
+            setHarga(response.data.data.harga)
+            setDurasi(response.data.data.durasi)
+            setBarangId(response.data.data.barang_id)
+            setBarangNama(response.data.data.barang.nama)
+            setId(response.data.data.id)
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    }
+
+    function putDetailBarang() {
+         axios({
+           method: "put",
+           url: "http://127.0.0.1:8000/api/detail_barang/" + id,
+           headers: { Authorization: `Bearer ${props.token}` },
+           data: {
+               barang_id: barangId,
+               harga: harga,
+               durasi: durasi
+           }
+         })
+           .then(function (response) {
+             console.log(response);
+           handleClose()
+              getDetailBarang();
+           })
+           .catch(function (error) {
+             console.log(error);
+           });
+    }
     
     return (
       <SidebarComponent>
@@ -105,20 +156,37 @@ function DetailBarang(props) {
 
         <Modal show={show} onHide={handleClose} size="lg">
           <Modal.Header closeButton>
-            <Modal.Title>{tambah && "Tambah"} Detail Barang</Modal.Title>
+            <Modal.Title>
+              {tambah && "Tambah"} {edit && "Edit"} Detail Barang
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
-              <Form.Group className="mb-3">
-                <Form.Label>Barang</Form.Label>
-                <Form.Select onChange={(e) => setBarangId(e.target.value)}>
-                  <option>Pilih Barang</option>
-                  {barang &&
-                    barang.map((barang) => (
-                      <option value={barang.id}>{barang.nama}</option>
-                    ))}
-                </Form.Select>
-              </Form.Group>
+              {edit ? (
+                <Form.Group className="mb-3">
+                  <Form.Label>Barang</Form.Label>
+                  <Form.Select onChange={(e) => setBarangId(e.target.value)}>
+                    <option value={barangId}>{barangNama}</option>
+                    {barang &&
+                      barang.map((barang) => {
+                        if (barang.nama !== barangNama) {
+                            return <option value={barang.id}>{barang.nama}</option>
+                        }
+                      })}
+                  </Form.Select>
+                </Form.Group>
+              ) : (
+                <Form.Group className="mb-3">
+                  <Form.Label>Barang</Form.Label>
+                  <Form.Select onChange={(e) => setBarangId(e.target.value)}>
+                    <option>Pilih Barang</option>
+                    {barang &&
+                      barang.map((barang) => (
+                        <option value={barang.id}>{barang.nama}</option>
+                      ))}
+                  </Form.Select>
+                </Form.Group>
+              )}
 
               <Form.Group className="mb-3">
                 <Form.Label>Harga</Form.Label>
@@ -126,6 +194,7 @@ function DetailBarang(props) {
                   type="number"
                   min="1"
                   onChange={(e) => setHarga(e.target.value)}
+                  value={harga}
                 />
               </Form.Group>
 
@@ -135,6 +204,7 @@ function DetailBarang(props) {
                   type="number"
                   min="1"
                   onChange={(e) => setDurasi(e.target.value)}
+                  value={durasi}
                 />
               </Form.Group>
             </Form>
@@ -148,6 +218,11 @@ function DetailBarang(props) {
                 Simpan
               </Button>
             )}
+            {edit && (
+              <Button variant="primary" onClick={putDetailBarang}>
+                Update
+              </Button>
+            )}
           </Modal.Footer>
         </Modal>
 
@@ -158,6 +233,7 @@ function DetailBarang(props) {
               <th>Nama</th>
               <th>Harga</th>
               <th>Durasi</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -168,6 +244,21 @@ function DetailBarang(props) {
                   <td>{detailBarang.barang.nama}</td>
                   <td>Rp. {detailBarang.harga}</td>
                   <td>{detailBarang.durasi} Hari</td>
+                  <td>
+                    <ButtonGroup>
+                      <Button
+                        onClick={() => showEdit(detailBarang.id)}
+                        size="sm"
+                        variant="primary"
+                        className="mx-2"
+                      >
+                        Edit
+                      </Button>
+                      <Button size="sm" variant="secondary">
+                        Middle
+                      </Button>
+                    </ButtonGroup>
+                  </td>
                 </tr>
               ))}
           </tbody>
