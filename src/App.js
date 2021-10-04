@@ -6,6 +6,11 @@ import RouteComponent from "./routes/RouteComponent";
 function App() {
 
   const [token, setToken] = useState()
+  const [role, setRole] = useState()
+
+  useEffect(() => {
+    getRole();
+  });
 
   useEffect(() => {
     getToken()
@@ -15,12 +20,16 @@ function App() {
     setToken(localStorage.getItem('token'))
   }
 
+  function getRole() {
+    setToken(localStorage.getItem('role'))
+  }
+
   return (
     <Router>
       <div>
         <NavbarComponent token={token} />
 
-        <RouteComponent token={token} setToken={setToken} />
+        <RouteComponent token={token} setToken={setToken} setRole={setRole} />
       </div>
     </Router>
   );

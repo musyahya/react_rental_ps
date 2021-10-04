@@ -6,6 +6,7 @@ import Register from "../pages/register/Register";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Barang from "../pages/barang/Barang";
 import DetailBarang from "../pages/detail_barang/DetailBarang";
+import Home from "../pages/home/Home";
 
 function RouteComponent(props) {
 
@@ -23,16 +24,19 @@ function RouteComponent(props) {
               <DetailBarang token={props.token} />
             </Route>
             <Route path="/logout">
-              <Logout token={props.token} setToken={props.setToken} />
+              <Logout token={props.token} setToken={props.setToken} setRole={props.setRole} />
             </Route>
           </Fragment>
         ) : (
           <Fragment>
             <Route path="/login">
-              <Login setToken={props.setToken} />
+              <Login setToken={props.setToken} setRole={props.setRole} />
+            </Route>
+            <Route path="/register">
+              <Register setToken={props.setToken} setRole={props.setRole} />
             </Route>
             <Route path="/" exact>
-              <Register setToken={props.setToken} />
+              <Home />
             </Route>
           </Fragment>
         )}

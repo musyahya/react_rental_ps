@@ -27,8 +27,14 @@ function Register(props) {
           .then(function (response) {
             console.log(response);
              localStorage.setItem("token", response.data.token);
+             localStorage.setItem("role", response.data.data.role_id);
              props.setToken(response.data.token)
-             history.push('/dashboard')
+             props.setRole(response.data.role_id)
+             if (response.data.data.role_id == 1) {
+               history.push("/dashboard");
+             } else {
+               history.push("/");
+             }
           })
           .catch(function (error) {
             console.log(error.response);

@@ -9,7 +9,7 @@ function NavbarComponent(props) {
     return (
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
           <Nav className="mr-auto">
             {props.token ? (
               <Fragment>
@@ -22,7 +22,7 @@ function NavbarComponent(props) {
                 <Nav.Link as={Link} to="/login">
                   Login
                 </Nav.Link>
-                <Nav.Link as={Link} to="/">
+                <Nav.Link as={Link} to="/register">
                   Register
                 </Nav.Link>
               </Fragment>

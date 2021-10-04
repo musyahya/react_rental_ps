@@ -20,7 +20,9 @@ function Logout(props) {
          .then(function (response) {
            console.log(response);
            props.setToken()
+           props.setRole()
            localStorage.removeItem('token')
+           localStorage.removeItem('role')
             history.push('/login')
          })
          .catch(function (error) {
