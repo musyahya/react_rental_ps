@@ -4,6 +4,7 @@ import { Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import CardComponent from "../../components/CardComponent";
 import SmallError from "../../components/SmallError";
+import { API_URL } from "../../utility/Url";
 
 function Login(props) {
 
@@ -15,7 +16,7 @@ function Login(props) {
 
       function login() {
            axios
-             .post("http://127.0.0.1:8000/api/login", {
+             .post(API_URL +"login", {
                email: email,
                password: password,
              })

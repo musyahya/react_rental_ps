@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect } from "react";
 import { useHistory } from 'react-router-dom';
+import { API_URL } from "../../utility/Url";
 
 function Logout(props) {
 
@@ -13,7 +14,7 @@ function Logout(props) {
     function logout() {
        axios({
          method: "post",
-         url: "http://127.0.0.1:8000/api/logout",
+         url: API_URL +"logout",
          headers: { "Authorization": `Bearer ${props.token}` },
        })
          .then(function (response) {

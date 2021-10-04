@@ -4,6 +4,7 @@ import SidebarComponent from '../../components/SidebarComponent';
 import TableComponent from "../../components/TableComponent";
 import { Button, ButtonGroup, Form, Modal } from "react-bootstrap";
 import SmallError from "../../components/SmallError";
+import { API_URL } from "../../utility/Url";
 
 function DetailBarang(props) {
 
@@ -51,7 +52,7 @@ function DetailBarang(props) {
      function getBarang() {
        axios({
          method: "get",
-         url: "http://127.0.0.1:8000/api/barang",
+         url: API_URL +"barang",
          headers: { Authorization: `Bearer ${props.token}` },
        })
          .then(function (response) {
@@ -66,7 +67,7 @@ function DetailBarang(props) {
     function getDetailBarang() {
           axios({
             method: "get",
-            url: "http://127.0.0.1:8000/api/detail_barang",
+            url: API_URL +"detail_barang",
             headers: { Authorization: `Bearer ${props.token}` },
           })
             .then(function (response) {
@@ -81,7 +82,7 @@ function DetailBarang(props) {
     function postDetailBarang() {
         axios({
           method: "post",
-          url: "http://127.0.0.1:8000/api/detail_barang",
+          url: API_URL +"detail_barang",
           headers: { Authorization: `Bearer ${props.token}` },
           data: {
               barang_id: barangId,
@@ -108,7 +109,7 @@ function DetailBarang(props) {
     function showEdit(id) {
         axios({
           method: "get",
-          url: "http://127.0.0.1:8000/api/detail_barang/" +id,
+          url: API_URL +"detail_barang/" +id,
           headers: { Authorization: `Bearer ${props.token}` },
         })
           .then(function (response) {
@@ -129,7 +130,7 @@ function DetailBarang(props) {
     function putDetailBarang() {
          axios({
            method: "put",
-           url: "http://127.0.0.1:8000/api/detail_barang/" + id,
+           url: API_URL +"detail_barang/" + id,
            headers: { Authorization: `Bearer ${props.token}` },
            data: {
                barang_id: barangId,
@@ -157,7 +158,7 @@ function DetailBarang(props) {
     function deleteDetailBarang() {
        axios({
          method: "delete",
-         url: "http://127.0.0.1:8000/api/detail_barang/" + id,
+         url: API_URL +"detail_barang/" + id,
          headers: { Authorization: `Bearer ${props.token}` },
        })
          .then(function (response) {

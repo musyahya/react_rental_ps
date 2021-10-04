@@ -4,6 +4,7 @@ import { Button, Modal, Form, ButtonGroup } from "react-bootstrap";
 import SidebarComponent from "../../components/SidebarComponent";
 import SmallError from "../../components/SmallError";
 import TableComponent from "../../components/TableComponent";
+import { API_URL, STORAGE_URL } from "../../utility/Url";
 
 function Barang(props) {
   const [barang, setBarang] = useState();
@@ -46,7 +47,7 @@ function Barang(props) {
   function getBarang() {
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/barang",
+      url: API_URL +'barang',
       headers: { Authorization: `Bearer ${props.token}` },
     })
       .then(function (response) {
@@ -66,7 +67,7 @@ function Barang(props) {
 
     axios({
       method: "post",
-      url: "http://127.0.0.1:8000/api/barang",
+      url: API_URL +"barang",
       headers: { Authorization: `Bearer ${props.token}` },
       data: formData,
     })
@@ -84,7 +85,7 @@ function Barang(props) {
   function getBarangId(id) {
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/barang/" + id,
+      url: API_URL +"barang/" + id,
       headers: { Authorization: `Bearer ${props.token}` },
     })
       .then(function (response) {
@@ -109,7 +110,7 @@ function Barang(props) {
 
         axios({
           method: "post",
-          url: "http://127.0.0.1:8000/api/barang/" + id +"?_method=PUT",
+          url: API_URL +"barang/" + id +"?_method=PUT",
           headers: { Authorization: `Bearer ${props.token}` },
           data: formData
         })
@@ -127,7 +128,7 @@ function Barang(props) {
   function deleteBarang() {
     axios({
       method: "delete",
-      url: "http://127.0.0.1:8000/api/barang/" + id,
+      url: API_URL +"barang/" + id,
       headers: { Authorization: `Bearer ${props.token}` },
     })
       .then(function (response) {
@@ -186,7 +187,7 @@ function Barang(props) {
                   <Fragment>
                     <br />
                     <img
-                      src={"http://127.0.0.1:8000/storage/" + gambarLama}
+                      src={STORAGE_URL + gambarLama}
                       width="80"
                       height="80"
                       className="mb-2"
@@ -252,7 +253,7 @@ function Barang(props) {
               <tr>
                 <td>{index + 1}</td>
                 <td>
-                  <img src={"http://127.0.0.1:8000/storage/" +barang.gambar} width="80" height="80" />
+                  <img src={STORAGE_URL +barang.gambar} width="80" height="80" />
                 </td>
                 <td>{barang.nama}</td>
                 <td>{barang.deskripsi}</td>
