@@ -12,19 +12,26 @@ function RouteComponent(props) {
 
     return (
       <Switch>
+        <Route path="/" exact>
+          <Home />
+        </Route>
         {props.token ? (
           <Fragment>
             <Route path="/dashboard">
-              <Dashboard />
+              <Dashboard role={props.role} />
             </Route>
             <Route path="/barang">
-              <Barang token={props.token} />
+              <Barang role={props.role} token={props.token} />
             </Route>
             <Route path="/detail_barang">
-              <DetailBarang token={props.token} />
+              <DetailBarang role={props.role} token={props.token} />
             </Route>
             <Route path="/logout">
-              <Logout token={props.token} setToken={props.setToken} setRole={props.setRole} />
+              <Logout
+                token={props.token}
+                setToken={props.setToken}
+                setRole={props.setRole}
+              />
             </Route>
           </Fragment>
         ) : (
@@ -34,9 +41,6 @@ function RouteComponent(props) {
             </Route>
             <Route path="/register">
               <Register setToken={props.setToken} setRole={props.setRole} />
-            </Route>
-            <Route path="/" exact>
-              <Home />
             </Route>
           </Fragment>
         )}

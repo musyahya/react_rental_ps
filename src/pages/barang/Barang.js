@@ -1,12 +1,25 @@
 import axios from "axios";
 import React, { Fragment, useEffect, useState } from "react";
 import { Button, Modal, Form, ButtonGroup } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import SidebarComponent from "../../components/SidebarComponent";
 import SmallError from "../../components/SmallError";
 import TableComponent from "../../components/TableComponent";
 import { API_URL, STORAGE_URL } from "../../utility/Url";
 
 function Barang(props) {
+  const history = useHistory();
+
+  useEffect(() => {
+    cekRole();
+  }, []);
+
+  function cekRole() {
+    if (props.role != 1) {
+      history.push("/");
+    }
+  }
+
   const [barang, setBarang] = useState();
   const [nama, setNama] = useState();
   const [deskripsi, setDeskripsi] = useState();

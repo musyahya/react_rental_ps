@@ -5,8 +5,20 @@ import TableComponent from "../../components/TableComponent";
 import { Button, ButtonGroup, Form, Modal } from "react-bootstrap";
 import SmallError from "../../components/SmallError";
 import { API_URL } from "../../utility/Url";
+import { useHistory } from "react-router-dom";
 
 function DetailBarang(props) {
+  const history = useHistory();
+
+  useEffect(() => {
+    cekRole();
+  }, []);
+
+  function cekRole() {
+    if (props.role != 1) {
+      history.push("/");
+    }
+  }
 
     const [detailBarang, setDetailBarang] = useState()
     const [barang, setBarang] = useState()

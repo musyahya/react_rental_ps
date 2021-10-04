@@ -21,7 +21,7 @@ function App() {
   }
 
   function getRole() {
-    setToken(localStorage.getItem('role'))
+    setRole(localStorage.getItem('role'))
   }
 
   return (
@@ -29,7 +29,7 @@ function App() {
       <div>
         <NavbarComponent token={token} />
 
-        <RouteComponent token={token} setToken={setToken} setRole={setRole} />
+        <RouteComponent token={token} setToken={setToken} role={role} setRole={setRole} />
       </div>
     </Router>
   );
