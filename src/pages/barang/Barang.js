@@ -184,8 +184,13 @@ function Barang(props) {
                 <Form.Label>Gambar</Form.Label>
                 {edit && (
                   <Fragment>
-                    <br/>
-                    <img src={"http://127.0.0.1:8000/storage/" +gambarLama} width="80" height="80" className="mb-2" />
+                    <br />
+                    <img
+                      src={"http://127.0.0.1:8000/storage/" + gambarLama}
+                      width="80"
+                      height="80"
+                      className="mb-2"
+                    />
                   </Fragment>
                 )}
                 <Form.Control
@@ -235,6 +240,7 @@ function Barang(props) {
         <thead>
           <tr>
             <th>No</th>
+            <th>Gambar</th>
             <th>Nama</th>
             <th>Deskripsi</th>
             <th>Aksi</th>
@@ -245,6 +251,9 @@ function Barang(props) {
             barang.map((barang, index) => (
               <tr>
                 <td>{index + 1}</td>
+                <td>
+                  <img src={"http://127.0.0.1:8000/storage/" +barang.gambar} width="80" height="80" />
+                </td>
                 <td>{barang.nama}</td>
                 <td>{barang.deskripsi}</td>
                 <td>
