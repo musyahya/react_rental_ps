@@ -11,6 +11,7 @@ function Barang(props) {
   const [deskripsi, setDeskripsi] = useState();
   const [id, setId] = useState();
   const [gambar, setGambar] = useState();
+  const [gambarLama, setGambarLama] = useState()
 
   const [tambah, setTambah] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -35,6 +36,7 @@ function Barang(props) {
     setDeskripsi(" ");
     setId(" ");
     setGambar(" ");
+    setGambarLama(" ")
   }
 
   useEffect(() => {
@@ -91,6 +93,7 @@ function Barang(props) {
         setNama(response.data.data.nama);
         setDeskripsi(response.data.data.deskripsi);
         setId(response.data.data.id);
+        setGambarLama(response.data.data.gambar)
         setEdit(true);
       })
       .catch(function (error) {
@@ -99,14 +102,16 @@ function Barang(props) {
   }
 
    function updateBarang() {
+       let formData = new FormData();
+       formData.append("nama", nama);
+       formData.append("gambar", gambar);
+       formData.append("deskripsi", deskripsi);
+
         axios({
-          method: "put",
-          url: "http://127.0.0.1:8000/api/barang/" + id,
+          method: "post",
+          url: "http://127.0.0.1:8000/api/barang/" + id +"?_method=PUT",
           headers: { Authorization: `Bearer ${props.token}` },
-          data: {
-            nama: nama,
-            deskripsi: deskripsi,
-          }
+          data: formData
         })
           .then(function (response) {
             console.log(response);
@@ -177,6 +182,12 @@ function Barang(props) {
 
               <Form.Group className="mb-3">
                 <Form.Label>Gambar</Form.Label>
+                {edit && (
+                  <Fragment>
+                    <br/>
+                    <img src={"http://127.0.0.1:8000/storage/" +gambarLama} width="80" height="80" className="mb-2" />
+                  </Fragment>
+                )}
                 <Form.Control
                   type="file"
                   onChange={(e) => setGambar(e.target.files[0])}
