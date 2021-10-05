@@ -1,0 +1,35 @@
+#hero{
+    height: 100vh;
+    background-color: #dcdde1;
+}
+
+#hero .hero-row{
+    padding-top: 100vh;
+    transform: translateY(-50%);
+}
+
+#hero .hero-p{
+    font-size: 24px;
+    margin-bottom: 60px;
+}
+
+#produk{
+    padding-top: 100px;
+    background-color: #f5f6fa;
+}
+
+#lokasi{
+    padding-top: 100px;
+    background-color: #dcdde1;
+}
+
+#kontak{
+    padding-top: 100px;
+    background-color: #f5f6fa;
+}
+
+#footer{
+    background-color: #dcdde1;
+    margin-bottom: -15px;
+    padding: 20px 0 5px;
+}
