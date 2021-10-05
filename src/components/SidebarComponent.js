@@ -20,6 +20,13 @@ function SidebarComponent(props) {
               </ListGroup.Item>
               <ListGroup.Item
                 as={Link}
+                to="/rental"
+                className={pathname === "/rental" && "active"}
+              >
+                Rental
+              </ListGroup.Item>
+              <ListGroup.Item
+                as={Link}
                 to="/barang"
                 className={pathname === "/barang" && "active"}
               >

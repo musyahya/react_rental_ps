@@ -7,6 +7,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Barang from "../pages/barang/Barang";
 import DetailBarang from "../pages/detail_barang/DetailBarang";
 import Home from "../pages/home/Home";
+import Rental from "../pages/rental/Rental";
 
 function RouteComponent(props) {
 
@@ -19,6 +20,9 @@ function RouteComponent(props) {
           <Fragment>
             <Route path="/dashboard">
               <Dashboard role={props.role} />
+            </Route>
+            <Route path="/rental">
+              <Rental role={props.role} token={props.token} />
             </Route>
             <Route path="/barang">
               <Barang role={props.role} token={props.token} />
