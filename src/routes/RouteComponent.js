@@ -9,13 +9,14 @@ import DetailBarang from "../pages/detail_barang/DetailBarang";
 import Home from "../pages/home/Home";
 import Rental from "../pages/rental/Rental";
 import Sewa from "../pages/sewa/Sewa";
+import SewaUser from "../pages/sewaUser/SewaUser";
 
 function RouteComponent(props) {
 
     return (
       <Switch>
         <Route path="/" exact>
-          <Home />
+          <Home token={props.token} role={props.role} />
         </Route>
         {props.token ? (
           <Fragment>
@@ -34,6 +35,11 @@ function RouteComponent(props) {
             <Route path="/sewa">
               <Sewa role={props.role} token={props.token} />
             </Route>
+
+            <Route path="/sewa_user">
+              <SewaUser role={props.role} token={props.token} />
+            </Route>
+
             <Route path="/logout">
               <Logout
                 token={props.token}

@@ -7,7 +7,16 @@ function NavbarComponent(props) {
     return (
       <Navbar bg="dark" variant="dark" id="navbar">
         <Container>
-          <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">
+            Home
+          </Navbar.Brand>
+          {props.role == 2 && (
+            <Nav className="me-auto">
+              <Nav.Link as={Link} to="/sewa_user">
+                Sewa
+              </Nav.Link>
+            </Nav>
+          )}
           <Nav className="mr-auto">
             {props.token ? (
               <Fragment>

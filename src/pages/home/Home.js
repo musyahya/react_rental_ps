@@ -1,13 +1,28 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Card, Col, Container, Row, Button } from "react-bootstrap";
+import { Card, Col, Container, Row, Button, Modal, Form } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import SmallError from "../../components/SmallError";
 import { API_URL, STORAGE_URL } from "../../utility/Url";
 import './Hero.css'
 
-function Home() {
+function Home(props) {
 
     const [rental, setRental] = useState()
     const [detailBarang, setDetailBarang] = useState()
+    const [id, setId] = useState()
+    const [tanggal_diambil, setTanggalDiambil] = useState()
+    const history = useHistory()
+    const [error, setError] = useState()
+
+    const [show, setShow] = useState(false);
+    const handleShow = () => setShow(true);
+    function handleClose () {
+      setShow(false);
+      setId(" ")
+      setTanggalDiambil(" ")
+      setError(" ")
+    }
 
     useEffect(() => {
         getRental()
@@ -45,7 +60,37 @@ function Home() {
         });
     }
 
-    console.log(detailBarang);
+    function showSewa(id) {
+      handleShow()
+      setId(id)
+    }
+
+    function postSewa() {
+      if (!props.token) {
+        history.push('/login')
+      }
+      
+      if (props.role == 2) {
+        axios({
+          method: "post",
+          url: API_URL + "sewa",
+          headers: { Authorization: `Bearer ${props.token}` },
+          data: {
+            detail_barang_id: id,
+            tanggal_diambil: tanggal_diambil,
+          },
+        })
+          .then(function (response) {
+            console.log(response);
+            handleClose();
+            history.push('/sewa_user')
+          })
+          .catch(function (error) {
+            console.log(error.response);
+            setError(error.response.data.errors);
+          });
+      }
+    }
 
     return (
       <div>
@@ -83,7 +128,11 @@ function Home() {
                           <br />
                           <span>Rp. {detailBarang.harga}</span>
                         </Card.Text>
-                        <Button variant="primary" className="float-end">
+                        <Button
+                          variant="primary"
+                          className="float-end"
+                          onClick={() => showSewa(detailBarang.id)}
+                        >
                           Sewa
                         </Button>
                       </Card.Body>
@@ -160,6 +209,36 @@ function Home() {
         <div id="footer">
           <p className="text-center">Copyright 2021 Musyahya</p>
         </div>
+
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Sewa</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>Tanggan Sewa</Form.Label>
+                <Form.Control
+                  type="date"
+                  onChange={(e) => setTanggalDiambil(e.target.value)}
+                />
+                {error && (
+                  <SmallError
+                    error={error.tanggal_diambil && error.tanggal_diambil[0]}
+                  />
+                )}
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Batal
+            </Button>
+            <Button variant="primary" onClick={postSewa}>
+              Sewa
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
 }

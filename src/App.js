@@ -27,7 +27,7 @@ function App() {
   return (
     <Router>
       <div>
-        <NavbarComponent token={token} />
+        <NavbarComponent token={token} role={role} />
 
         <RouteComponent token={token} setToken={setToken} role={role} setRole={setRole} />
       </div>
