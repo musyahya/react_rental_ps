@@ -8,6 +8,7 @@ import Barang from "../pages/barang/Barang";
 import DetailBarang from "../pages/detail_barang/DetailBarang";
 import Home from "../pages/home/Home";
 import Rental from "../pages/rental/Rental";
+import Sewa from "../pages/sewa/Sewa";
 
 function RouteComponent(props) {
 
@@ -29,6 +30,9 @@ function RouteComponent(props) {
             </Route>
             <Route path="/detail_barang">
               <DetailBarang role={props.role} token={props.token} />
+            </Route>
+            <Route path="/sewa">
+              <Sewa role={props.role} token={props.token} />
             </Route>
             <Route path="/logout">
               <Logout

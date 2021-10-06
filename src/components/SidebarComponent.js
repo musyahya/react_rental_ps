@@ -39,6 +39,13 @@ function SidebarComponent(props) {
               >
                 Detail Barang
               </ListGroup.Item>
+              <ListGroup.Item
+                as={Link}
+                to="/sewa"
+                className={pathname === "/sewa" && "active"}
+              >
+                Sewa
+              </ListGroup.Item>
             </ListGroup>
           </Col>
           <Col md={8} lg={9}>

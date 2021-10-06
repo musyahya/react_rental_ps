@@ -1,13 +1,11 @@
 import React, { Fragment } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from 'react-router-dom';
+import './NavbarComponent.css'
 
 function NavbarComponent(props) {
-
-
-
     return (
-      <Navbar bg="dark" variant="dark">
+      <Navbar bg="dark" variant="dark" id="navbar">
         <Container>
           <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
           <Nav className="mr-auto">
