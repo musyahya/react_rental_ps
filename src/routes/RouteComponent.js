@@ -21,7 +21,7 @@ function RouteComponent(props) {
         {props.token ? (
           <Fragment>
             <Route path="/dashboard">
-              <Dashboard role={props.role} />
+              <Dashboard role={props.role} token={props.token} />
             </Route>
             <Route path="/rental">
               <Rental role={props.role} token={props.token} />
