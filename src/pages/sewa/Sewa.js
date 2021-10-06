@@ -39,7 +39,20 @@ function Sewa(props) {
       });
   }
 
-  console.log(sewa);
+  function updateSewa(id) {
+       axios({
+         method: "put",
+         url: API_URL + "sewa/" +id,
+         headers: { Authorization: `Bearer ${props.token}` },
+       })
+         .then(function (response) {
+           console.log(response);
+           getSewa();
+         })
+         .catch(function (error) {
+           console.log(error.response);
+         });
+  }
 
   return (
     <SidebarComponent>
@@ -73,7 +86,7 @@ function Sewa(props) {
                   {(sewa.status == 1) ? (
                     <Button
                       size="sm"
-                      // onClick={() => getBarangId(barang.id)}
+                      onClick={() => updateSewa(sewa.id)}
                       variant="success"
                     >
                       Selesaikan
