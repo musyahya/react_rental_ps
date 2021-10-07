@@ -4,12 +4,15 @@ import { Card, Col, Row } from "react-bootstrap";
 import { useHistory } from 'react-router-dom';
 import SidebarComponent from '../../components/SidebarComponent';
 import { API_URL } from "../../utility/Url";
+import { Line } from "react-chartjs-2";
 
 function Dashboard(props) {
 
   const history = useHistory()
   const [countSelesai, setCountSelesai] = useState()
   const [countBelumSelesai, setCountBelumSelesai] = useState()
+  const [chartSewa, setChartSewa] = useState()
+  const [date, setDate] = useState()
 
   useEffect(() => {
       cekRole()
@@ -21,6 +24,10 @@ function Dashboard(props) {
 
   useEffect(() => {
       getCountBelumSelesai();
+  }, [])
+
+  useEffect(() => {
+      getChartSewa();
   }, [])
 
   function cekRole() {
@@ -59,13 +66,60 @@ function Dashboard(props) {
        });
   }
 
+  function getChartSewa() {
+     axios({
+       method: "get",
+       url: API_URL + "sewa_chart",
+       headers: { Authorization: `Bearer ${props.token}` },
+     })
+       .then(function (response) {
+         console.log(response);
+         const data = response.data.data
+         setChartSewa(Object.values(data));
+
+         let date = []
+         for (let index = 0; index < Object.keys(data).length; index++) {
+           date.push(index+1)
+         }
+         setDate(date)
+       })
+       .catch(function (error) {
+         console.log(error.response);
+       });
+  }
+
+  const data = {
+    labels: date,
+    datasets: [
+      {
+        label: "Selesai Sewa",
+        data: chartSewa,
+        fill: false,
+        backgroundColor: "rgb(255, 99, 132)",
+        borderColor: "rgba(255, 99, 132, 0.2)",
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+  };
+
     return (
       <SidebarComponent>
         <h1>Dashboard</h1>
 
-        <Row className="mt-4">
+        <Row>
           <Col md="6">
-            <Card className="bg-success text-white">
+            <Card className="bg-success text-white my-3">
               <Card.Body>
                 <Card.Title>Selesai Sewa</Card.Title>
                 <Card.Text>
@@ -75,7 +129,7 @@ function Dashboard(props) {
             </Card>
           </Col>
           <Col md="6">
-            <Card className="bg-primary text-white">
+            <Card className="bg-primary text-white my-3">
               <Card.Body>
                 <Card.Title>Belum Selesai Sewa</Card.Title>
                 <Card.Text>
@@ -85,6 +139,8 @@ function Dashboard(props) {
             </Card>
           </Col>
         </Row>
+
+        <Line data={data} options={options} className="my-3" />
       </SidebarComponent>
     );
 }
