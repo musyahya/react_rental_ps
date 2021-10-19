@@ -28,7 +28,7 @@ extract file zip
 ## Buka di kode editor
 
 
-## Install composer
+## Install npm
 
 ```bash
 npm install
